@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fetch请求</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .box {
+      width: 350px;
+      height: 200px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #result {
+      width: 100%;
+      height: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <button>fetch请求</button>
+  </div>
+  <script>
+    const btn = document.querySelector('button')
+
+    btn.onclick = () => {
+      fetch('http://127.0.0.1:8867/fetch?pagesize=10&number=1', {
+        // 请求方法
+        method: 'POST',
+        // 请求头
+        headers: {
+          name: 'admin',
+        },
+        // 请求体
+        body: 'username=admin&password=123456',
+      }).then((res) => {
+        console.log(res)
+        // return res.text() // 返回字符串
+        return res.json() // 返回json
+      }).then((res) => {
+        console.log(res)
+
+      })
+    }
+
+  </script>
+</body>
+</html>

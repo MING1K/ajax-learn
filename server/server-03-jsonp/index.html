@@ -1,0 +1,69 @@
+<!--
+ * @Author       : ming
+ * @Date         : 2023-12-04 23:14:47
+ * @LastEditors  : ming
+ * @LastEditTime : 2023-12-04 23:55:03
+ * @Description  : jsonp实现跨域
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>首页</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .box {
+      width: 350px;
+      height: 200px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #result {
+      width: 100%;
+      height: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    用户名：<input type="text" id="username">
+    <button>查询</button>
+    <div class="result"></div>
+  </div>
+  <div class="box">
+    <button>post</button>
+    <div class="result"></div>
+  </div>
+
+  <script>
+    let input = document.querySelector('#username')
+    let btns = document.querySelectorAll('button')
+    let results = document.querySelectorAll('.result')
+
+    const initData = (res) => {
+      console.log(res)
+      results[0].innerHTML = res.desc
+    }
+    btns[0].onclick = () => {
+      const username = input.value
+      // 发送请求
+      // 1. 创建script标签
+      const script = document.createElement('script')
+      // 2. 设置script标签属性
+      script.src = 'http://127.0.0.1:8868/check-username?username=' + username
+      // 3. 将标签插入文档中
+      document.body.appendChild(script)
+    }
+
+  </script>
+</body>
+</html>

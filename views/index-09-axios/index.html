@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>axios请求</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .box {
+      width: 350px;
+      height: 200px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #result {
+      width: 100%;
+      height: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <button>GET</button>
+  </div>
+  <div class="box">
+    <button>POST</button>
+  </div>
+  <div class="box">
+    <button>通用型方法</button>
+  </div>
+  <script>
+    const btns = document.querySelectorAll('button')
+
+    // 配置 baseURL
+    axios.defaults.baseURL = 'http://127.0.0.1:8867'
+    
+    btns[0].onclick = () => {
+      // GET请求
+      axios.get('/axios', {
+        // params参数
+        params: {
+          size: 100,
+          number: 1,
+        },
+        // 请求头
+        headers: {
+          name: 'admin',
+          token: '111111',
+        }
+      }).then((res) => {
+        console.log(res, res.data)
+        console.log(`Get请求结果\n姓名：${res.data.name}\n描述：${res.data.desc}`)
+      })
+    }
+
+    btns[1].onclick = () => {
+      // POST请求
+      axios.post('/axios', {
+        username: 'admin',
+        password: '123456',
+      }, {
+        // params参数
+        params: {
+          size: 100,
+          number: 1,
+        },
+        // 请求头
+        headers: {
+          name: 'admin',
+          token: '111111',
+        },
+        // 请求体
+        // data: {
+        //   // username: 'admin',
+        //   password: '123456',
+        // },
+      }).then((res) => {
+        console.log(res, res.data)
+        console.log(`Post请求结果\n姓名：${res.data.name}\n描述：${res.data.desc}`)
+      })
+    }
+
+    btns[2].onclick = () => {
+      // POST请求
+      axios({
+        method: 'POST',
+        url: '/axios',
+        // params参数
+        params: {
+          size: 100,
+          number: 1,
+        },
+        // 请求头
+        headers: {
+          name: 'admin',
+          token: '111111',
+        },
+        // 请求体
+        data: {
+          username: 'admin',
+          password: '123456',
+        },
+      }).then((res) => {
+        console.log(res, res.data)
+        console.log(`通用型方法请求结果\n姓名：${res.data.name}\n描述：${res.data.desc}`)
+      })
+    }
+  </script>
+</body>
+</html>

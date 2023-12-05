@@ -1,0 +1,97 @@
+<!--
+ * @Author       : ming
+ * @Date         : 2023-12-04 23:14:47
+ * @LastEditors  : ming
+ * @LastEditTime : 2023-12-04 23:25:07
+ * @Description  : 实现跨域
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>首页</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .box {
+      width: 350px;
+      height: 200px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #result {
+      width: 100%;
+      height: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <button>get</button>
+    <div class="result"></div>
+  </div>
+  <div class="box">
+    <button>post</button>
+    <div class="result"></div>
+  </div>
+
+  <!-- <script src="./data.js"></script> -->
+  <!-- script可以实现跨域请求 -->
+  <script src="http://127.0.0.1:5500/server/server-02-jsonp/data.js"></script>
+  <script>
+    // 使用data.js中的函数
+    alertData()
+  </script>
+  <script src="http://127.0.0.1:8868/jsonp"></script>
+
+  <script>
+    let btns = document.querySelectorAll('button')
+    let results = document.querySelectorAll('.result')
+
+    const initData = (res) => {
+      results[0].innerHTML = res.response
+    }
+    btns[0].onclick = () => {
+      const xhr = new XMLHttpRequest()
+      // 因为是满足同源策略的，所以可以简写
+      xhr.open('GET', '/data')
+      xhr.send() // post请求参数设置
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            initData(xhr)
+          } else {
+            console.error(xhr)
+          }
+        }
+      }
+    }
+
+    const initPostData = (res) => {
+      results[1].innerHTML = res.response
+    }
+    btns[1].onclick = () => {
+      const xhr = new XMLHttpRequest()
+      xhr.open('POST', '/data')
+      xhr.send() // post请求参数设置
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            initPostData(xhr)
+          } else {
+            console.error(xhr)
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>

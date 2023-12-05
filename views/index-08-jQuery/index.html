@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jQuery发送Ajax请求</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="page-header">jQuery发送Ajax请求</h2>
+      <button class="btn">Get</button>
+      <button class="btn">POST</button>
+      <button class="btn">通用型方法Ajax</button>
+    </div>
+    <script>
+     $('button').eq(0).click(() => {
+      $.get('http://127.0.0.1:8867/jquery', { a: 100, b: 200 }, (res) => {
+        console.log(res)
+        let data = JSON.parse(res)
+        console.log(`Get请求结果\n姓名：${data.name}\n描述：${data.desc}`)
+      })
+     })
+
+     $('button').eq(1).click(() => {
+      $.post('http://127.0.0.1:8867/jquery', { a: 100, b: 200 }, (res) => {
+        console.log(res)
+        console.log(`Post请求结果\n姓名：${res.name}\n描述：${res.desc}`)
+      }, 'json') // 接收json数据类型
+     })
+
+     $('button').eq(2).click(() => {
+      $.ajax({
+        // url
+        url: 'http://127.0.0.1:8867/jquery',
+        // 参数
+        data: { a: 100, b: 200 },
+        // 请求类型
+        type: 'GET',
+        // 响应体结果
+        dataType: 'json',
+        // 成功的回调
+        success: (data) => {
+          console.log(data)
+        },
+        // 超时时间
+        timeout: 2000,
+        // 失败回调
+        error: () => {
+          console.log('出错了，请重试')
+        },
+        headers: {
+          a: 300,
+          name: 'admin',
+        }
+      })
+     })
+    </script>
+  </body>
+</html>

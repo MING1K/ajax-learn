@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>重复请求</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .box {
+        width: 350px;
+        height: 200px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      #result {
+        width: 100%;
+        height: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <button id="btn">点击发送请求Get</button>
+      <div id="result"></div>
+    </div>
+    <button id="btn-cancle">取消请求</button>
+    <script>
+      const result = document.getElementById("result");
+      const initData = (res) => {
+        result.innerHTML = `name: ${res.name} desc: ${res.desc}`;
+
+      };
+
+      let xhr = null
+      let isSending = false // 是否正在发送ajax请求
+
+      // get请求
+      const btn = document.getElementById("btn");
+      btn.addEventListener("click", () => {
+        // 判断标识变量
+        // if (isSending) return // 如果正在发送，取消新的请求，等待原请求响应
+        if (isSending) xhr.abort() // 如果正在发送，取消该请求，创建新请求
+        xhr = new XMLHttpRequest();
+        isSending = true // 修改标识变量
+        xhr.responseType = "json";
+        xhr.open("GET", "http://127.0.0.1:8867/delay");
+        xhr.send();
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4) {
+            isSending = false // 修改标识变量
+            if (xhr.status >= 200 && xhr.status < 300) {
+              initData(xhr.response);
+            } else {
+              console.error(xhr);
+            }
+          }
+        };
+      });
+
+      const cancleBtn = document.querySelector('#btn-cancle')
+      cancleBtn.addEventListener('click', () => {
+        if (xhr) {
+          xhr.abort()
+          console.log('取消get请求')
+        }
+      })
+    </script>
+  </body>
+</html>
